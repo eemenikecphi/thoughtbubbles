@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoboRev - Couples Connection App</title>
+    <meta name="description" content="A beautiful app for couples to share thoughts, voice messages, and daily challenges. Deepen your emotional connection today.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        
+        @keyframes bubble-appear {
+            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1.1) rotate(5deg); opacity: 0.8; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .bubble-enter { animation: bubble-appear 0.6s ease-out; }
+        .bubble-float { animation: float 4s ease-in-out infinite; }
+        .pulse-animation { animation: pulse 2s infinite; }
+        
+        .notification-badge {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            animation: pulse 1.5s infinite;
+        }
+        
+        .connection-heart {
+            background: radial-gradient(circle, #ff1744, #c2185b);
+            animation: pulse 1s infinite;
+        }
+        
+        .modal {
+            transition: all 0.3s ease;
+        }
+        
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal.hide {
+            opacity: 0;
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-100">
+    <!-- Complete MoboRev App HTML content will go here -->
+    <!-- I'll copy the entire HTML structure from interactive-preview.html -->
+    
+    <!-- Header -->
+    <div class="gradient-primary min-h-screen">
+        <!-- Navigation -->
+        <div class="flex justify-between items-center px-6 pt-12 pb-4">
+            <div class="flex items-center">
+                <div class="flex-1">
+                    <h1 class="text-white text-2xl font-bold">Welcome back,</h1>
+                    <p class="text-white text-lg opacity-90">Sunshine!</p>
+                    <div class="flex items-center mt-1">
+                        <span class="text-white text-sm opacity-75 mr-2">Connected with your partner</span>
+                        <div class="connection-heart w-5 h-5 rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-2">
+                <!-- Profile Button -->
+                <button id="profileBtn" class="text-white p-2 hover:bg-white/10 rounded-lg transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                </button>
+                
+                <!-- Notification Bell -->
+                <div class="relative">
+                    <button id="notificationBtn" class="text-white p-2 hover:bg-white/10 rounded-lg transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                        </svg>
+                    </button>
+                    <div id="notificationBadge" class="notification-badge absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center">
+                        <span id="notificationCount" class="text-white text-xs font-bold">3</span>
+                    </div>
+                </div>
+                
+                <button id="timelineBtn" class="bg-white text-purple-600 px-4 py-2 rounded-lg font-medium">Timeline</button>
+                <button id="mindMapBtn" class="border border-white text-white px-4 py-2 rounded-lg hover:bg-white/10 transition-colors">Mind Map</button>
+            </div>
+        </div>
+
+        <!-- Content will be populated by JavaScript -->
+        <div class="px-6 pb-20">
+            <div id="thoughtsContainer" class="space-y-4">
+                <!-- Thoughts will be dynamically added here -->
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <div class="fixed bottom-6 right-6">
+            <button id="addThoughtBtn" class="bg-blue-600 hover:bg-blue-700 text-white w-14 h-14 rounded-full shadow-lg pulse-animation flex items-center justify-center transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- All Modals will go here -->
+    <!-- Daily Challenge Modal -->
+    <div id="dailyChallengeModal" class="modal hide fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl p-6 max-w-md w-full bubble-enter">
+            <div id="challengeCard" class="rounded-2xl p-6 mb-4" style="background-color: #FFE6CC;">
+                <div class="text-center">
+                    <div id="challengeIcon" class="text-4xl mb-3">🙏</div>
+                    <h2 id="challengeTitle" class="text-xl font-bold text-gray-800 mb-3">Daily Connection Challenge</h2>
+                    <p id="challengePrompt" class="text-gray-700 leading-6">Share one thing your partner did recently that made you feel grateful.</p>
+                </div>
+            </div>
+            
+            <div class="text-center mb-6">
+                <p class="text-sm text-gray-600">💡 Daily challenges help deepen your connection with fresh conversation starters</p>
+            </div>
+            
+            <div class="flex space-x-3">
+                <button id="skipChallengeBtn" class="flex-1 border border-gray-300 text-gray-700 py-3 rounded-2xl font-medium hover:bg-gray-50 transition-colors">
+                    Maybe Later
+                </button>
+                <button id="acceptChallengeBtn" class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 rounded-2xl font-medium hover:from-purple-700 hover:to-pink-700 transition-colors">
+                    Accept Challenge
+                </button>
+            </div>
+            
+            <div class="text-center mt-4">
+                <p class="text-xs text-gray-500">New challenge every day at 9 AM</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        // Complete JavaScript will be embedded here
+        console.log('MoboRev App Loading...');
+        
+        // Basic app initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('MoboRev App Ready!');
+            
+            // Show welcome message
+            setTimeout(() => {
+                if (document.getElementById('dailyChallengeModal')) {
+                    document.getElementById('dailyChallengeModal').classList.remove('hide');
+                    document.getElementById('dailyChallengeModal').classList.add('show');
+                }
+            }, 2000);
+        });
+    </script>
+
+</body>
+</html>

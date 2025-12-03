@@ -1,0 +1,14 @@
+{
+  "name": "moborev-mvp",
+  "version": "1.0.0",
+  "description": "MoboRev MVP - Couples connection app with voice messages and daily challenges",
+  "main": "interactive-preview.html",
+  "scripts": {
+    "dev": "python3 -m http.server 8000",
+    "build": "echo 'Static site - no build needed'",
+    "start": "echo 'Static site ready for deployment'"
+  },
+  "keywords": ["couples", "relationships", "communication", "voice-messages", "daily-challenges"],
+  "author": "MoboRev Team",
+  "license": "MIT"
+}

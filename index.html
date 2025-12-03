@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MoboRev - Couples Connection App</title>
-    <meta name="description" content="Share thoughts, voice messages, and daily challenges with your partner. Deepen your emotional connection.">
+    <title>MoboRev - Interactive Demo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
         .gradient-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .gradient-secondary { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
         
         @keyframes bubble-appear {
             0% { transform: scale(0) rotate(0deg); opacity: 0; }
@@ -49,249 +47,116 @@
         .modal.show {
             opacity: 1;
             visibility: visible;
-            pointer-events: all;
         }
         
         .modal.hide {
             opacity: 0;
             visibility: hidden;
-            pointer-events: none;
-        }
-
-        .tab-content.hidden { display: none; }
-        
-        .profile-tab-btn.active {
-            background-color: white;
-            color: #374151;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        
-        .mind-map-view-btn.active,
-        .mind-map-filter-btn.active {
-            background-color: #3b82f6;
-            color: white;
         }
     </style>
 </head>
 <body class="min-h-screen bg-gray-100">
-
-    <!-- App Container -->
-    <div id="appContainer">
-        
-        <!-- Welcome Screen -->
-        <div id="welcomeScreen" class="min-h-screen gradient-primary flex items-center justify-center px-8">
-            <div class="bg-white rounded-3xl p-8 shadow-2xl max-w-md w-full">
-                <div class="text-center">
-                    <h1 class="text-4xl font-bold text-gray-800 mb-4">MoboRev</h1>
-                    <p class="text-lg text-gray-600 mb-8">Deepen your emotional connection through shared reflections</p>
-                    
-                    <div class="space-y-4">
-                        <button id="getStartedBtn" class="w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors">
-                            Get Started
-                        </button>
-                        
-                        <button id="signInBtn" class="w-full border border-blue-600 text-blue-600 py-3 rounded-xl font-medium hover:bg-blue-50 transition-colors">
-                            Sign In
-                        </button>
+    <!-- Header -->
+    <div class="gradient-primary min-h-screen">
+        <!-- Navigation -->
+        <div class="flex justify-between items-center px-6 pt-12 pb-4">
+            <div class="flex items-center">
+                <div class="flex-1">
+                    <h1 class="text-white text-2xl font-bold">Welcome back,</h1>
+                    <p class="text-white text-lg opacity-90">Sunshine!</p>
+                    <div class="flex items-center mt-1">
+                        <span class="text-white text-sm opacity-75 mr-2">Connected with your partner</span>
+                        <div class="connection-heart w-5 h-5 rounded-full"></div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Main Dashboard -->
-        <div id="dashboardScreen" class="hidden min-h-screen gradient-primary">
             
-            <!-- Header -->
-            <div class="flex justify-between items-center px-6 pt-12 pb-4">
-                <div class="flex items-center">
-                    <div class="flex-1">
-                        <h1 class="text-white text-2xl font-bold">Welcome back,</h1>
-                        <p id="userPetNameDisplay" class="text-white text-lg opacity-90">Sunshine!</p>
-                        <div class="flex items-center mt-1">
-                            <span class="text-white text-sm opacity-75 mr-2">Connected with your partner</span>
-                            <div class="connection-heart w-5 h-5 rounded-full"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="flex items-center space-x-2">
-                    <!-- Profile Button -->
-                    <button id="profileBtn" class="text-white p-2 hover:bg-white/10 rounded-lg transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                        </svg>
-                    </button>
-                    
-                    <!-- Notification Bell -->
-                    <div class="relative">
-                        <button id="notificationBtn" class="text-white p-2 hover:bg-white/10 rounded-lg transition-colors">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                            </svg>
-                        </button>
-                        <div id="notificationBadge" class="notification-badge absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center" style="display: none;">
-                            <span id="notificationCount" class="text-white text-xs font-bold">0</span>
-                        </div>
-                    </div>
-                    
-                    <button id="timelineBtn" class="bg-white text-purple-600 px-4 py-2 rounded-lg font-medium">Timeline</button>
-                    <button id="mindMapBtn" class="border border-white text-white px-4 py-2 rounded-lg hover:bg-white/10 transition-colors">Mind Map</button>
-                </div>
-            </div>
-
-            <!-- Content Area -->
-            <div class="px-6 pb-20" id="mainContent">
-                
-                <!-- Demo Controls -->
-                <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-6">
-                    <h3 class="font-bold text-amber-800 mb-3">🛠️ Interactive Demo</h3>
-                    <div class="flex space-x-2 mb-2">
-                        <button id="startDemoBtn" class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg font-medium flex-1 transition-colors">Start Demo</button>
-                        <button id="resetBtn" class="border border-amber-500 text-amber-600 hover:bg-amber-50 px-4 py-2 rounded-lg flex-1 transition-colors">Reset</button>
-                    </div>
-                    <button id="testNotificationsBtn" class="text-amber-600 text-sm underline hover:text-amber-700">Test Notifications</button>
-                    <p id="statsText" class="text-xs text-amber-600 mt-2">Current thoughts: 0 | Click buttons to interact!</p>
-                </div>
-
-                <!-- Weekly Insight -->
-                <div id="weeklyInsight" class="bg-white/95 rounded-2xl p-6 mb-6 shadow-lg hidden">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-gradient-to-r from-purple-100 to-blue-100 rounded-full p-3 mr-4">
-                            <span class="text-2xl">🧠</span>
-                        </div>
-                        <div class="flex-1">
-                            <h3 class="text-lg font-bold text-gray-800">Weekly Connection Report</h3>
-                            <p class="text-sm text-gray-600" id="weeklyDateRange">This week</p>
-                        </div>
-                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">New</span>
-                    </div>
-                    <p id="weeklyInsightText" class="text-gray-800 mb-4">You both shared meaningful thoughts this week, showing active engagement and beautiful emotional connection.</p>
-                    <button id="expandInsightBtn" class="text-blue-600 font-medium hover:text-blue-700">See Full Report ↓</button>
-                    
-                    <!-- Expanded Content -->
-                    <div id="expandedInsight" class="mt-4 pt-4 border-t border-gray-200 hidden">
-                        <h4 class="font-semibold text-gray-800 mb-2">🌟 Positive Patterns</h4>
-                        <ul class="text-gray-700 mb-4 space-y-1">
-                            <li>• You both express gratitude frequently</li>
-                            <li>• Deep emotional sharing has increased</li>
-                            <li>• You're both being vulnerable and supportive</li>
-                        </ul>
-                        <h4 class="font-semibold text-gray-800 mb-2">💡 Suggested Conversation Starters</h4>
-                        <div class="space-y-2">
-                            <div class="bg-blue-50 rounded-lg p-3">
-                                <p class="text-blue-800">Try asking: "What made you smile today?"</p>
-                            </div>
-                            <div class="bg-blue-50 rounded-lg p-3">
-                                <p class="text-blue-800">Share a childhood memory that brings you joy</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Empty State -->
-                <div id="emptyState" class="bg-white rounded-3xl p-8 items-center justify-center min-h-80 text-center">
-                    <div class="text-6xl mb-4">🌱</div>
-                    <h2 class="text-xl font-semibold text-gray-800 mb-2">Start Your Journey</h2>
-                    <p class="text-gray-600 mb-6">Share your first thought to begin building deeper connection with your partner</p>
-                    <button id="firstThoughtBtn" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors">
-                        Share First Thought
-                    </button>
-                </div>
-
-                <!-- Thoughts Container -->
-                <div id="thoughtsContainer" class="space-y-4 hidden">
-                    <!-- Thoughts will be dynamically added here -->
-                </div>
-            </div>
-
-            <!-- Floating Action Button -->
-            <div class="fixed bottom-6 right-6">
-                <button id="addThoughtBtn" class="bg-blue-600 hover:bg-blue-700 text-white w-14 h-14 rounded-full shadow-lg pulse-animation flex items-center justify-center transition-colors">
+            <div class="flex items-center space-x-2">
+                <!-- Profile Button -->
+                <button id="profileBtn" class="text-white p-2 hover:bg-white/10 rounded-lg transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                     </svg>
                 </button>
+                
+                <!-- Notification Bell -->
+                <div class="relative">
+                    <button id="notificationBtn" class="text-white p-2 hover:bg-white/10 rounded-lg transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                        </svg>
+                    </button>
+                    <div id="notificationBadge" class="notification-badge absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center">
+                        <span id="notificationCount" class="text-white text-xs font-bold">3</span>
+                    </div>
+                </div>
+                
+                <button id="timelineBtn" class="bg-white text-purple-600 px-4 py-2 rounded-lg font-medium">Timeline</button>
+                <button id="mindMapBtn" class="border border-white text-white px-4 py-2 rounded-lg hover:bg-white/10 transition-colors">Mind Map</button>
             </div>
         </div>
 
-        <!-- Mind Map View -->
-        <div id="mindMapScreen" class="hidden min-h-screen bg-white">
-            <!-- Header -->
-            <div class="flex justify-between items-center px-6 pt-12 pb-4 gradient-primary text-white">
-                <div>
-                    <h1 class="text-xl font-bold">Mind Map View</h1>
-                    <p class="text-sm opacity-90">Visualize your conversation threads</p>
+        <!-- Content -->
+        <div class="px-6 pb-20">
+            <!-- Demo Controls -->
+            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-6">
+                <h3 class="font-bold text-amber-800 mb-3">🛠️ Interactive Demo</h3>
+                <div class="flex space-x-2 mb-2">
+                    <button id="startDemoBtn" class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg font-medium flex-1 transition-colors">Start Demo</button>
+                    <button id="resetBtn" class="border border-amber-500 text-amber-600 hover:bg-amber-50 px-4 py-2 rounded-lg flex-1 transition-colors">Reset</button>
                 </div>
-                <button id="backToTimelineBtn" class="border border-white text-white px-4 py-2 rounded-lg hover:bg-white/10 transition-colors">
-                    ← Timeline
-                </button>
+                <button id="testNotificationsBtn" class="text-amber-600 text-sm underline hover:text-amber-700">Test Notifications</button>
+                <p id="statsText" class="text-xs text-amber-600 mt-2">Current thoughts: 5 | Click buttons to interact!</p>
             </div>
 
-            <!-- Mind Map Controls -->
-            <div class="bg-white border-b border-gray-200 p-4">
-                <div class="flex justify-center space-x-2 mb-4">
-                    <button id="forceViewBtn" class="mind-map-view-btn active bg-blue-600 text-white px-4 py-2 rounded-lg">Force</button>
-                    <button id="radialViewBtn" class="mind-map-view-btn border border-gray-300 px-4 py-2 rounded-lg">Radial</button>
-                    <button id="timelineViewBtn" class="mind-map-view-btn border border-gray-300 px-4 py-2 rounded-lg">Timeline</button>
+            <!-- Weekly Insight -->
+            <div id="weeklyInsight" class="bg-white/95 rounded-2xl p-6 mb-6 shadow-lg">
+                <div class="flex items-center mb-4">
+                    <div class="bg-gradient-to-r from-purple-100 to-blue-100 rounded-full p-3 mr-4">
+                        <span class="text-2xl">🧠</span>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-gray-800">Weekly Connection Report</h3>
+                        <p class="text-sm text-gray-600">Dec 4 - Dec 10</p>
+                    </div>
+                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">New</span>
                 </div>
+                <p class="text-gray-800 mb-4">You both shared 8 thoughts this week, showing active engagement and beautiful emotional connection.</p>
+                <button id="expandInsightBtn" class="text-blue-600 font-medium hover:text-blue-700">See Full Report ↓</button>
                 
-                <div class="flex justify-center space-x-2">
-                    <button id="filterAllBtn" class="mind-map-filter-btn active bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">All</button>
-                    <button id="filterMineBtn" class="mind-map-filter-btn border border-gray-300 px-3 py-1 rounded-full text-sm">My Thoughts</button>
-                    <button id="filterPartnerBtn" class="mind-map-filter-btn border border-gray-300 px-3 py-1 rounded-full text-sm">Partner's</button>
+                <!-- Expanded Content -->
+                <div id="expandedInsight" class="mt-4 pt-4 border-t border-gray-200 hidden">
+                    <h4 class="font-semibold text-gray-800 mb-2">🌟 Positive Patterns</h4>
+                    <ul class="text-gray-700 mb-4 space-y-1">
+                        <li>• You both express gratitude frequently</li>
+                        <li>• Deep emotional sharing has increased</li>
+                        <li>• You're both being vulnerable and supportive</li>
+                    </ul>
+                    <h4 class="font-semibold text-gray-800 mb-2">💡 Suggested Conversation Starters</h4>
+                    <div class="space-y-2">
+                        <div class="bg-blue-50 rounded-lg p-3">
+                            <p class="text-blue-800">Try asking: "What made you smile today?"</p>
+                        </div>
+                        <div class="bg-blue-50 rounded-lg p-3">
+                            <p class="text-blue-800">Share a childhood memory that brings you joy</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Mind Map Canvas -->
-            <div class="relative bg-gray-50 h-96">
-                <svg id="mindMapSvg" class="w-full h-full">
-                    <!-- Mind map will be drawn here -->
+            <!-- Thought Bubbles Container -->
+            <div id="thoughtsContainer" class="space-y-4">
+                <!-- Thoughts will be dynamically added here -->
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <div class="fixed bottom-6 right-6">
+            <button id="addThoughtBtn" class="bg-blue-600 hover:bg-blue-700 text-white w-14 h-14 rounded-full shadow-lg pulse-animation flex items-center justify-center transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
-                
-                <!-- Node info panel -->
-                <div id="nodeInfoPanel" class="absolute top-4 right-4 bg-white rounded-lg p-3 shadow-lg max-w-xs hidden">
-                    <h4 id="nodeTitle" class="font-semibold text-gray-800 mb-1"></h4>
-                    <p id="nodeContent" class="text-sm text-gray-600 mb-2"></p>
-                    <p id="nodeTime" class="text-xs text-gray-400"></p>
-                </div>
-                
-                <!-- Instructions -->
-                <div class="absolute bottom-4 left-4 bg-white/90 rounded-lg p-2 text-xs text-gray-600">
-                    💡 Click nodes to explore • Different layouts available above
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ALL MODALS -->
-
-    <!-- Daily Challenge Modal -->
-    <div id="dailyChallengeModal" class="modal hide fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-3xl p-6 max-w-md w-full bubble-enter">
-            <div id="challengeCard" class="rounded-2xl p-6 mb-4" style="background-color: #FFE6CC;">
-                <div class="text-center">
-                    <div id="challengeIcon" class="text-4xl mb-3">🙏</div>
-                    <h2 id="challengeTitle" class="text-xl font-bold text-gray-800 mb-3">Daily Connection Challenge</h2>
-                    <p id="challengePrompt" class="text-gray-700 leading-6">Share one thing your partner did recently that made you feel grateful.</p>
-                </div>
-            </div>
-            
-            <div class="text-center mb-6">
-                <p class="text-sm text-gray-600">💡 Daily challenges help deepen your connection with fresh conversation starters</p>
-            </div>
-            
-            <div class="flex space-x-3">
-                <button id="skipChallengeBtn" class="flex-1 border border-gray-300 text-gray-700 py-3 rounded-2xl font-medium hover:bg-gray-50 transition-colors">
-                    Maybe Later
-                </button>
-                <button id="acceptChallengeBtn" class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 rounded-2xl font-medium hover:from-purple-700 hover:to-pink-700 transition-colors">
-                    Accept Challenge
-                </button>
-            </div>
-            
-            <div class="text-center mt-4">
-                <p class="text-xs text-gray-500">New challenge every day at 9 AM</p>
-            </div>
+            </button>
         </div>
     </div>
 
@@ -373,942 +238,489 @@
         </div>
     </div>
 
-    <!-- Profile Modal (Simplified for MVP) -->
-    <div id="profileModal" class="modal hide fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-3xl p-6 max-w-lg w-full bubble-enter">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-800">Profile Settings</h2>
-                <button id="closeProfileBtn" class="text-gray-500 hover:text-gray-700">
+    <!-- Mind Map Modal -->
+    <div id="mindMapModal" class="modal hide fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold">Mind Map View</h2>
+                <button id="closeMindMapBtn" class="text-gray-500 hover:text-gray-700">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
             </div>
             
-            <div class="space-y-6">
-                <!-- Your Profile -->
-                <div class="bg-purple-50 rounded-2xl p-6">
-                    <h3 class="text-lg font-semibold text-purple-800 mb-4">👤 Your Profile</h3>
-                    
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-purple-700 mb-2">Your Name</label>
-                            <input type="text" id="userNameInput" class="w-full px-3 py-2 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" 
-                                   placeholder="Your real name" value="Alice">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-purple-700 mb-2">Pet Name (What partner calls you)</label>
-                            <input type="text" id="userPetNameInput" class="w-full px-3 py-2 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" 
-                                   placeholder="What your partner calls you" value="Sunshine">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-purple-700 mb-2">Partner's Pet Name (What you call them)</label>
-                            <input type="text" id="partnerPetNameInput" class="w-full px-3 py-2 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" 
-                                   placeholder="What you call your partner" value="Sweetheart">
-                        </div>
-                    </div>
+            <!-- Mind Map Controls -->
+            <div class="flex justify-center space-x-2 mb-4">
+                <button id="forceViewBtn" class="mind-map-view-btn bg-blue-600 text-white px-4 py-2 rounded-lg">Force</button>
+                <button id="radialViewBtn" class="mind-map-view-btn border border-gray-300 hover:bg-gray-50 px-4 py-2 rounded-lg transition-colors">Radial</button>
+                <button id="timelineViewBtn" class="mind-map-view-btn border border-gray-300 hover:bg-gray-50 px-4 py-2 rounded-lg transition-colors">Timeline</button>
+            </div>
+            
+            <div class="flex justify-center space-x-2 mb-6">
+                <button id="filterAllBtn" class="mind-map-filter-btn bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">All</button>
+                <button id="filterMineBtn" class="mind-map-filter-btn border border-gray-300 hover:bg-gray-50 px-3 py-1 rounded-full text-sm transition-colors">My Thoughts</button>
+                <button id="filterPartnerBtn" class="mind-map-filter-btn border border-gray-300 hover:bg-gray-50 px-3 py-1 rounded-full text-sm transition-colors">Partner's</button>
+            </div>
+            
+            <!-- Interactive Mind Map -->
+            <div class="bg-gray-50 rounded-lg h-96 relative overflow-hidden">
+                <svg id="mindMapSvg" class="w-full h-full">
+                    <!-- Mind map will be drawn here -->
+                </svg>
+                
+                <!-- Node info panel -->
+                <div id="nodeInfoPanel" class="absolute top-4 right-4 bg-white rounded-lg p-3 shadow-lg max-w-xs hidden">
+                    <h4 id="nodeTitle" class="font-semibold text-gray-800 mb-1"></h4>
+                    <p id="nodeContent" class="text-sm text-gray-600 mb-2"></p>
+                    <p id="nodeTime" class="text-xs text-gray-400"></p>
                 </div>
                 
-                <!-- Save Button -->
-                <button id="saveProfileBtn" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 rounded-2xl font-semibold hover:from-purple-700 hover:to-blue-700 transition-colors">
-                    💾 Save Changes
-                </button>
+                <!-- Instructions -->
+                <div class="absolute bottom-4 left-4 bg-white/90 rounded-lg p-2 text-xs text-gray-600">
+                    💡 Click nodes to explore • Drag to move around
+                </div>
             </div>
         </div>
     </div>
 
-    <script>
-        // COMPLETE MOBOREV APPLICATION JAVASCRIPT
-        class MoboRevApp {
-            constructor() {
-                this.currentScreen = 'welcome';
-                this.thoughts = [];
-                this.notifications = [];
-                this.notificationCount = 0;
-                this.currentReplyThoughtId = null;
-                this.isRecording = false;
-                this.mediaRecorder = null;
-                this.audioChunks = [];
-                this.mindMapView = 'force';
-                this.mindMapFilter = 'all';
-                
-                this.dailyChallenges = [
-                    {
-                        id: 1,
-                        type: "gratitude",
-                        title: "Gratitude Moment",
-                        prompt: "Share one thing your partner did recently that made you feel grateful. Be specific about how it made you feel.",
-                        icon: "🙏",
-                        color: "#FFE6CC"
-                    },
-                    {
-                        id: 2,
-                        type: "memory",
-                        title: "Sweet Memory", 
-                        prompt: "Tell your partner about a favorite memory from your first month together. What made that moment special?",
-                        icon: "💭",
-                        color: "#E6F3FF"
-                    },
-                    {
-                        id: 3,
-                        type: "future",
-                        title: "Dream Together",
-                        prompt: "If you could plan the perfect weekend together next month, what would it look like? Share your ideal scenario.",
-                        icon: "🌟",
-                        color: "#F0FFE6"
-                    },
-                    {
-                        id: 4,
-                        type: "appreciation",
-                        title: "Quality I Admire",
-                        prompt: "What's one personality trait of your partner that you admire most? Give a specific example of when you noticed it.",
-                        icon: "❤️",
-                        color: "#FFE6F0"
-                    },
-                    {
-                        id: 5,
-                        type: "support", 
-                        title: "How Can I Help?",
-                        prompt: "What's one thing you could do this week to make your partner's life a little easier or happier?",
-                        icon: "🤝",
-                        color: "#E6E6FF"
-                    },
-                    {
-                        id: 6,
-                        type: "growth",
-                        title: "Growing Together",
-                        prompt: "Share something new you've learned about yourself through this relationship. How has your partner helped you grow?",
-                        icon: "🌱",
-                        color: "#E6FFE6"
-                    },
-                    {
-                        id: 7,
-                        type: "fun",
-                        title: "Playful Moment",
-                        prompt: "What's the silliest or most playful moment you've shared recently? What made it so fun?",
-                        icon: "😄", 
-                        color: "#FFF0E6"
-                    }
-                ];
+    <!-- Profile Management Modal -->
+    <div id="profileModal" class="modal hide fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto bubble-enter">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Profile & Account Settings</h2>
+                <button id="closeProfileBtn" class="text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
 
-                this.profiles = {
-                    user: {
-                        name: "Alice",
-                        petName: "Sunshine", 
-                        avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
-                        initials: "AL"
-                    },
-                    partner: {
-                        name: "Bob",
-                        petName: "Sweetheart",
-                        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face", 
-                        initials: "BS"
-                    }
-                };
-
-                this.pastelColors = [
-                    '#FFB3E6', '#B3E6FF', '#E6FFB3', '#FFE6B3', 
-                    '#E6B3FF', '#B3FFE6', '#FFB3B3', '#B3B3FF',
-                    '#FFFFB3', '#FFB3CC', '#CCB3FF', '#B3FFCC'
-                ];
-
-                this.init();
-                this.loadStoredData();
-            }
-
-            init() {
-                console.log('🎉 MoboRev Full App Loading...');
-                
-                // Welcome screen buttons
-                document.getElementById('getStartedBtn')?.addEventListener('click', () => this.showDashboard());
-                document.getElementById('signInBtn')?.addEventListener('click', () => this.showDashboard());
-                
-                // Main navigation
-                document.getElementById('addThoughtBtn')?.addEventListener('click', () => this.showAddThoughtModal());
-                document.getElementById('firstThoughtBtn')?.addEventListener('click', () => this.showAddThoughtModal());
-                document.getElementById('mindMapBtn')?.addEventListener('click', () => this.showMindMap());
-                document.getElementById('backToTimelineBtn')?.addEventListener('click', () => this.showDashboard());
-                document.getElementById('profileBtn')?.addEventListener('click', () => this.showProfileModal());
-                document.getElementById('notificationBtn')?.addEventListener('click', () => this.showNotificationModal());
-
-                // Thought modal
-                document.getElementById('shareThoughtBtn')?.addEventListener('click', () => this.addThought());
-                document.getElementById('cancelThoughtBtn')?.addEventListener('click', () => this.hideAddThoughtModal());
-                document.getElementById('voiceRecordBtn')?.addEventListener('click', () => this.toggleVoiceRecording());
-
-                // Reply modal 
-                document.getElementById('submitReplyBtn')?.addEventListener('click', () => this.addReply());
-                document.getElementById('cancelReplyBtn')?.addEventListener('click', () => this.hideReplyModal());
-
-                // Challenge modal
-                document.getElementById('acceptChallengeBtn')?.addEventListener('click', () => this.acceptDailyChallenge());
-                document.getElementById('skipChallengeBtn')?.addEventListener('click', () => this.skipDailyChallenge());
-
-                // Profile modal
-                document.getElementById('closeProfileBtn')?.addEventListener('click', () => this.hideProfileModal());
-                document.getElementById('saveProfileBtn')?.addEventListener('click', () => this.saveProfile());
-
-                // Notification modal
-                document.getElementById('closeNotificationsBtn')?.addEventListener('click', () => this.hideNotificationModal());
-                document.getElementById('clearNotificationsBtn')?.addEventListener('click', () => this.clearNotifications());
-
-                // Demo controls
-                document.getElementById('startDemoBtn')?.addEventListener('click', () => this.startDemo());
-                document.getElementById('resetBtn')?.addEventListener('click', () => this.resetApp());
-                document.getElementById('testNotificationsBtn')?.addEventListener('click', () => this.testNotifications());
-                document.getElementById('expandInsightBtn')?.addEventListener('click', () => this.toggleInsight());
-
-                // Input listeners
-                document.getElementById('thoughtInput')?.addEventListener('input', (e) => this.updateCharCount(e, 'charCount', 500));
-                document.getElementById('replyInput')?.addEventListener('input', (e) => this.updateCharCount(e, 'replyCharCount', 300));
-
-                // Suggestion chips
-                document.querySelectorAll('.suggestion-chip').forEach(chip => {
-                    chip.addEventListener('click', (e) => {
-                        document.getElementById('thoughtInput').value = e.target.textContent;
-                        this.updateCharCount({target: document.getElementById('thoughtInput')}, 'charCount', 500);
-                    });
-                });
-
-                // Mind map controls
-                document.getElementById('forceViewBtn')?.addEventListener('click', () => this.setMindMapView('force'));
-                document.getElementById('radialViewBtn')?.addEventListener('click', () => this.setMindMapView('radial')); 
-                document.getElementById('timelineViewBtn')?.addEventListener('click', () => this.setMindMapView('timeline'));
-                document.getElementById('filterAllBtn')?.addEventListener('click', () => this.setMindMapFilter('all'));
-                document.getElementById('filterMineBtn')?.addEventListener('click', () => this.setMindMapFilter('mine'));
-                document.getElementById('filterPartnerBtn')?.addEventListener('click', () => this.setMindMapFilter('partner'));
-
-                // Close modals on backdrop click
-                document.querySelectorAll('.modal').forEach(modal => {
-                    modal.addEventListener('click', (e) => {
-                        if (e.target === modal) {
-                            this.hideAllModals();
-                        }
-                    });
-                });
-            }
-
-            loadStoredData() {
-                const stored = localStorage.getItem('moborev_data');
-                if (stored) {
-                    const data = JSON.parse(stored);
-                    this.thoughts = data.thoughts || [];
-                    this.profiles = { ...this.profiles, ...data.profiles };
-                    this.notifications = data.notifications || [];
-                    this.notificationCount = this.notifications.filter(n => !n.read).length;
-                    this.updateNotificationBadge();
-                }
-                
-                // Show daily challenge after delay
-                setTimeout(() => this.showDailyChallengeIfNeeded(), 3000);
-            }
-
-            saveData() {
-                const data = {
-                    thoughts: this.thoughts,
-                    profiles: this.profiles,
-                    notifications: this.notifications,
-                    timestamp: new Date().toISOString()
-                };
-                localStorage.setItem('moborev_data', JSON.stringify(data));
-            }
-
-            // SCREEN MANAGEMENT
-            showScreen(screenName) {
-                document.querySelectorAll('#welcomeScreen, #dashboardScreen, #mindMapScreen').forEach(screen => {
-                    screen.classList.add('hidden');
-                });
-                document.getElementById(screenName + 'Screen').classList.remove('hidden');
-                this.currentScreen = screenName;
-            }
-
-            showDashboard() {
-                this.showScreen('dashboard');
-                this.renderThoughts();
-                this.updateStats();
-            }
-
-            showMindMap() {
-                this.showScreen('mindMap');
-                this.renderInteractiveMindMap();
-            }
-
-            // MODAL MANAGEMENT
-            showModal(modalId) {
-                this.hideAllModals();
-                const modal = document.getElementById(modalId);
-                if (modal) {
-                    modal.classList.remove('hide');
-                    modal.classList.add('show');
-                }
-            }
-
-            hideModal(modalId) {
-                const modal = document.getElementById(modalId);
-                if (modal) {
-                    modal.classList.remove('show');
-                    modal.classList.add('hide');
-                }
-            }
-
-            hideAllModals() {
-                document.querySelectorAll('.modal').forEach(modal => {
-                    modal.classList.remove('show');
-                    modal.classList.add('hide');
-                });
-            }
-
-            // THOUGHT MANAGEMENT
-            showAddThoughtModal() {
-                this.showModal('addThoughtModal');
-                document.getElementById('thoughtInput').focus();
-            }
-
-            hideAddThoughtModal() {
-                this.hideModal('addThoughtModal');
-                document.getElementById('thoughtInput').value = '';
-                this.updateCharCount({target: document.getElementById('thoughtInput')}, 'charCount', 500);
-            }
-
-            addThought() {
-                const content = document.getElementById('thoughtInput').value.trim();
-                if (!content) return;
-
-                const newThought = {
-                    id: Date.now().toString(),
-                    userId: 'user',
-                    content: content,
-                    timestamp: new Date(),
-                    color: this.pastelColors[Math.floor(Math.random() * this.pastelColors.length)],
-                    replies: [],
-                    isVoiceMessage: false
-                };
-
-                this.thoughts.unshift(newThought);
-                this.renderThoughts();
-                this.hideAddThoughtModal();
-                this.updateStats();
-                this.saveData();
-
-                this.showToast('💭 Thought Shared!', 'Your thought has been added to the timeline');
-
-                // Simulate partner notification
-                setTimeout(() => {
-                    this.addNotification("💭 New Thought", `You shared: "${content.substring(0, 30)}..."`);
-                }, 1000);
-            }
-
-            showReplyModal(thoughtId) {
-                this.currentReplyThoughtId = thoughtId;
-                this.showModal('replyModal');
-                document.getElementById('replyInput').focus();
-            }
-
-            hideReplyModal() {
-                this.hideModal('replyModal');
-                document.getElementById('replyInput').value = '';
-                this.currentReplyThoughtId = null;
-                this.updateCharCount({target: document.getElementById('replyInput')}, 'replyCharCount', 300);
-            }
-
-            addReply() {
-                const content = document.getElementById('replyInput').value.trim();
-                if (!content || !this.currentReplyThoughtId) return;
-
-                const thought = this.thoughts.find(t => t.id === this.currentReplyThoughtId);
-                if (!thought) return;
-
-                const newReply = {
-                    id: Date.now().toString(),
-                    userId: 'user',
-                    content: content,
-                    timestamp: new Date()
-                };
-
-                thought.replies.push(newReply);
-                this.renderThoughts();
-                this.hideReplyModal();
-                this.saveData();
-
-                this.showToast('💬 Reply Added!', 'Your reply has been shared');
-            }
-
-            renderThoughts() {
-                const container = document.getElementById('thoughtsContainer');
-                const emptyState = document.getElementById('emptyState');
-
-                if (this.thoughts.length === 0) {
-                    container.classList.add('hidden');
-                    emptyState.classList.remove('hidden');
-                    emptyState.style.display = 'flex';
-                    return;
-                }
-
-                emptyState.classList.add('hidden');
-                container.classList.remove('hidden');
-                container.innerHTML = '';
-
-                const sortedThoughts = [...this.thoughts].sort((a, b) => 
-                    new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-                );
-
-                sortedThoughts.forEach((thought, index) => {
-                    const thoughtEl = this.createThoughtElement(thought, index);
-                    container.appendChild(thoughtEl);
-                });
-            }
-
-            createThoughtElement(thought, index) {
-                const profile = this.profiles[thought.userId];
-                const isOwnThought = thought.userId === 'user';
-                const timeAgo = this.formatTimeAgo(thought.timestamp);
-
-                const div = document.createElement('div');
-                div.className = `bubble-enter bubble-float ${isOwnThought ? '' : 'ml-8'}`;
-                div.style.animationDelay = `${index * 0.2}s`;
-
-                div.innerHTML = `
-                    <div class="rounded-3xl p-4 shadow-lg cursor-pointer hover:shadow-xl transition-shadow" style="background-color: ${thought.color};">
-                        <div class="flex items-center mb-3">
-                            <div class="w-8 h-8 bg-white/30 rounded-full flex items-center justify-center mr-3">
-                                <span class="text-sm font-bold">${profile.initials}</span>
+            <!-- Tab Navigation -->
+            <div class="flex mb-6 bg-gray-100 rounded-xl p-1">
+                <button id="profilesTabBtn" class="profile-tab-btn flex-1 py-2 px-4 rounded-lg font-medium transition-colors bg-white text-gray-800 shadow-sm">
+                    👥 Profiles
+                </button>
+                <button id="accountTabBtn" class="profile-tab-btn flex-1 py-2 px-4 rounded-lg font-medium transition-colors text-gray-600 hover:text-gray-800">
+                    ⚙️ Account
+                </button>
+                <button id="relationshipTabBtn" class="profile-tab-btn flex-1 py-2 px-4 rounded-lg font-medium transition-colors text-gray-600 hover:text-gray-800">
+                    💕 Relationship
+                </button>
+                <button id="privacyTabBtn" class="profile-tab-btn flex-1 py-2 px-4 rounded-lg font-medium transition-colors text-gray-600 hover:text-gray-800">
+                    🔒 Privacy
+                </button>
+            </div>
+            
+            <!-- Profiles Tab -->
+            <div id="profilesTab" class="tab-content">
+                <div class="grid md:grid-cols-2 gap-6">
+                <!-- Your Profile -->
+                <div class="bg-purple-50 rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold text-purple-800 mb-4 flex items-center">
+                        <span class="mr-2">👤</span> Your Profile
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="text-center">
+                            <div class="relative inline-block">
+                                <img id="userAvatarPreview" src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face" 
+                                     alt="Your avatar" class="w-20 h-20 rounded-full object-cover border-4 border-purple-200">
+                                <button class="absolute bottom-0 right-0 bg-purple-600 text-white rounded-full p-2 hover:bg-purple-700 transition-colors"
+                                        onclick="document.getElementById('userAvatarInput').click()">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                </button>
                             </div>
-                            <div class="flex-1">
-                                <p class="font-semibold text-gray-800">${profile.petName}</p>
-                                <p class="text-xs text-gray-600">${timeAgo}</p>
-                            </div>
-                            ${thought.isVoiceMessage ? '<div class="bg-blue-100 rounded-full p-2"><span class="text-lg">🎙️</span></div>' : ''}
+                            <input type="file" id="userAvatarInput" accept="image/*" class="hidden">
                         </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-purple-700 mb-2">Real Name</label>
+                            <input type="text" id="userNameInput" class="w-full px-3 py-2 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" 
+                                   placeholder="Your real name">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-purple-700 mb-2">Pet Name</label>
+                            <input type="text" id="userPetNameInput" class="w-full px-3 py-2 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" 
+                                   placeholder="What your partner calls you">
+                        </div>
+                        
+                        <div class="bg-purple-100 rounded-lg p-3">
+                            <p class="text-sm text-purple-700">
+                                <span class="font-medium">💡 Tip:</span> Your pet name will show on all your thoughts and replies
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Partner's Profile -->
+                <div class="bg-blue-50 rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold text-blue-800 mb-4 flex items-center">
+                        <span class="mr-2">❤️</span> Partner's Profile
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="text-center">
+                            <div class="relative inline-block">
+                                <img id="partnerAvatarPreview" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" 
+                                     alt="Partner's avatar" class="w-20 h-20 rounded-full object-cover border-4 border-blue-200">
+                                <button class="absolute bottom-0 right-0 bg-blue-600 text-white rounded-full p-2 hover:bg-blue-700 transition-colors"
+                                        onclick="document.getElementById('partnerAvatarInput').click()">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <input type="file" id="partnerAvatarInput" accept="image/*" class="hidden">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-blue-700 mb-2">Partner's Name</label>
+                            <input type="text" id="partnerNameInput" class="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                   placeholder="Your partner's name">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-blue-700 mb-2">Pet Name for Partner</label>
+                            <input type="text" id="partnerPetNameInput" class="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                   placeholder="What you call your partner">
+                        </div>
+                        
+                        <div class="bg-blue-100 rounded-lg p-3">
+                            <p class="text-sm text-blue-700">
+                                <span class="font-medium">💝 Sweet:</span> Their pet name will appear on their thoughts and replies
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                
+                <!-- Save Button -->
+                <div class="mt-6 text-center">
+                    <button id="saveProfileBtn" class="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-3 rounded-2xl font-semibold hover:from-purple-700 hover:to-blue-700 transition-colors">
+                        💾 Save Profile Changes
+                    </button>
+                </div>
+            </div>
 
-                        ${thought.isVoiceMessage ? `
-                            <div class="bg-white/20 rounded-lg p-3 mb-3">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="text-gray-800 font-medium">${thought.content}</span>
+            <!-- Account Tab -->
+            <div id="accountTab" class="tab-content hidden">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Account Information -->
+                    <div class="bg-blue-50 rounded-2xl p-6">
+                        <h3 class="text-lg font-semibold text-blue-800 mb-4 flex items-center">
+                            <span class="mr-2">👤</span> Account Information
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-blue-700 mb-2">Email Address</label>
+                                <input type="email" id="emailInput" class="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white" 
+                                       value="alice@example.com" readonly>
+                                <p class="text-xs text-blue-600 mt-1">Used for login and notifications</p>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-blue-700 mb-2">Current Password</label>
+                                <input type="password" id="currentPasswordInput" class="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                       placeholder="Enter current password">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-blue-700 mb-2">New Password</label>
+                                <input type="password" id="newPasswordInput" class="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                       placeholder="Enter new password (min 8 characters)">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-blue-700 mb-2">Confirm New Password</label>
+                                <input type="password" id="confirmPasswordInput" class="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                       placeholder="Confirm new password">
+                            </div>
+                            
+                            <button id="changePasswordBtn" class="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                                🔐 Change Password
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Account Actions -->
+                    <div class="bg-gray-50 rounded-2xl p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                            <span class="mr-2">⚙️</span> Account Actions
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div class="bg-white rounded-lg p-4 border border-gray-200">
+                                <h4 class="font-medium text-gray-800 mb-2">📧 Send Password Reset</h4>
+                                <p class="text-sm text-gray-600 mb-3">Send a password reset link to your email</p>
+                                <button id="sendPasswordResetBtn" class="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-200 transition-colors">
+                                    Send Reset Email
+                                </button>
+                            </div>
+                            
+                            <div class="bg-white rounded-lg p-4 border border-gray-200">
+                                <h4 class="font-medium text-gray-800 mb-2">📱 Download Data</h4>
+                                <p class="text-sm text-gray-600 mb-3">Export all your thoughts and conversations</p>
+                                <button id="downloadDataBtn" class="bg-green-100 text-green-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-200 transition-colors">
+                                    Download My Data
+                                </button>
+                            </div>
+                            
+                            <div class="bg-white rounded-lg p-4 border border-red-200">
+                                <h4 class="font-medium text-red-800 mb-2">⚠️ Danger Zone</h4>
+                                <p class="text-sm text-red-600 mb-3">Permanently delete your account and all data</p>
+                                <button id="deleteAccountBtn" class="bg-red-100 text-red-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-200 transition-colors">
+                                    Delete Account
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Relationship Tab -->
+            <div id="relationshipTab" class="tab-content hidden">
+                <div class="max-w-2xl mx-auto">
+                    <!-- Connection Status -->
+                    <div class="bg-pink-50 rounded-2xl p-6 mb-6">
+                        <h3 class="text-lg font-semibold text-pink-800 mb-4 flex items-center">
+                            <span class="mr-2">💕</span> Relationship Status
+                        </h3>
+                        
+                        <div id="connectionStatus" class="space-y-4">
+                            <!-- Connected State -->
+                            <div id="connectedState" class="bg-green-100 rounded-lg p-4 border border-green-200">
+                                <div class="flex items-center mb-2">
+                                    <div class="connection-heart w-6 h-6 rounded-full mr-3"></div>
+                                    <h4 class="font-medium text-green-800">Connected to Bob</h4>
                                 </div>
-                                <div class="flex items-center space-x-3">
-                                    <button class="voice-play-btn bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-700 transition-colors">
-                                        ▶️
+                                <p class="text-sm text-green-700 mb-3">You've been sharing thoughts since December 1, 2024</p>
+                                <div class="flex space-x-2">
+                                    <button id="disconnectPartnerBtn" class="bg-red-100 text-red-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-200 transition-colors">
+                                        Disconnect Partner
                                     </button>
-                                    <div class="flex-1 bg-white/30 rounded-full h-2">
-                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 0%"></div>
-                                    </div>
-                                    <span class="text-xs text-gray-700">${thought.duration || 32}s</span>
+                                    <button id="sendNewInviteBtn" class="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-200 transition-colors">
+                                        Send New Invite
+                                    </button>
                                 </div>
                             </div>
-                        ` : `<p class="text-gray-800 mb-3">${thought.content}</p>`}
-
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-600">${thought.replies.length} ${thought.replies.length === 1 ? 'reply' : 'replies'}</span>
-                            <button class="reply-btn text-blue-600 font-medium hover:text-blue-700 px-3 py-1 rounded-lg hover:bg-white/20 transition-colors" data-thought-id="${thought.id}">Reply</button>
                         </div>
-
-                        <!-- Replies -->
-                        <div class="replies-container mt-4 space-y-2 ${thought.replies.length === 0 ? 'hidden' : ''}">
-                            ${thought.replies.map(reply => `
-                                <div class="bg-white/90 rounded-2xl p-3 ml-4 bubble-enter">
-                                    <div class="flex items-center mb-2">
-                                        <div class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center mr-2">
-                                            <span class="text-xs text-white font-bold">${this.profiles[reply.userId].initials}</span>
-                                        </div>
-                                        <span class="font-medium text-sm">${this.profiles[reply.userId].petName}</span>
-                                        <span class="ml-auto text-xs text-gray-500">${this.formatTimeAgo(reply.timestamp)}</span>
-                                    </div>
-                                    <p class="text-gray-800 text-sm">${reply.content}</p>
+                    </div>
+                    
+                    <!-- Invite Partner -->
+                    <div class="bg-purple-50 rounded-2xl p-6 mb-6">
+                        <h3 class="text-lg font-semibold text-purple-800 mb-4 flex items-center">
+                            <span class="mr-2">📮</span> Invite Your Partner
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-purple-700 mb-2">Partner's Email</label>
+                                <input type="email" id="partnerEmailInput" class="w-full px-3 py-2 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" 
+                                       placeholder="partner@example.com">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-purple-700 mb-2">Personal Message (Optional)</label>
+                                <textarea id="inviteMessageInput" rows="3" class="w-full px-3 py-2 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" 
+                                          placeholder="Add a personal touch to your invitation...">Hi! I'd love to start our journey of deeper connection on MoboRev. Join me! ❤️</textarea>
+                            </div>
+                            
+                            <button id="sendInviteBtn" class="w-full bg-purple-600 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition-colors">
+                                💌 Send Invitation
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Relationship Settings -->
+                    <div class="bg-blue-50 rounded-2xl p-6">
+                        <h3 class="text-lg font-semibold text-blue-800 mb-4 flex items-center">
+                            <span class="mr-2">🎯</span> Relationship Settings
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="font-medium text-blue-800">Weekly Insights</h4>
+                                    <p class="text-sm text-blue-600">Receive AI-generated relationship insights every Monday</p>
                                 </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
-
-                // Add event listeners
-                const replyBtn = div.querySelector('.reply-btn');
-                replyBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    this.showReplyModal(thought.id);
-                });
-
-                const voiceBtn = div.querySelector('.voice-play-btn');
-                if (voiceBtn) {
-                    voiceBtn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        this.showToast('🎵 Playing Voice', 'Voice message playback (demo)');
-                    });
-                }
-
-                return div;
-            }
-
-            // VOICE RECORDING
-            async toggleVoiceRecording() {
-                if (!this.isRecording) {
-                    await this.startVoiceRecording();
-                } else {
-                    this.stopVoiceRecording();
-                }
-            }
-
-            async startVoiceRecording() {
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    this.mediaRecorder = new MediaRecorder(stream);
-                    this.audioChunks = [];
-
-                    this.mediaRecorder.ondataavailable = (event) => {
-                        this.audioChunks.push(event.data);
-                    };
-
-                    this.mediaRecorder.onstop = () => {
-                        const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
-                        this.handleVoiceMessage(audioBlob);
-                        stream.getTracks().forEach(track => track.stop());
-                    };
-
-                    this.mediaRecorder.start();
-                    this.isRecording = true;
-
-                    const btn = document.getElementById('voiceRecordBtn');
-                    btn.textContent = '⏹️ Stop Recording';
-                    btn.classList.add('bg-red-500', 'text-white');
-                    btn.classList.remove('bg-gray-100');
-
-                    this.showToast('🎙️ Recording...', 'Speak your message, then tap stop');
-
-                } catch (error) {
-                    this.showToast('Microphone Error', 'Please allow microphone access');
-                }
-            }
-
-            stopVoiceRecording() {
-                if (this.mediaRecorder && this.isRecording) {
-                    this.mediaRecorder.stop();
-                    this.isRecording = false;
-
-                    const btn = document.getElementById('voiceRecordBtn');
-                    btn.textContent = '🎙️ Voice Message';
-                    btn.classList.remove('bg-red-500', 'text-white');
-                    btn.classList.add('bg-gray-100');
-                }
-            }
-
-            handleVoiceMessage(audioBlob) {
-                const duration = Math.floor(Math.random() * 45) + 15;
-
-                const voiceThought = {
-                    id: Date.now().toString(),
-                    content: `🎙️ Voice message (${duration}s)`,
-                    userId: 'user',
-                    timestamp: new Date(),
-                    color: '#E6F7FF',
-                    replies: [],
-                    isVoiceMessage: true,
-                    duration: duration
-                };
-
-                this.thoughts.unshift(voiceThought);
-                this.renderThoughts();
-                this.hideAddThoughtModal();
-                this.updateStats();
-                this.saveData();
-
-                this.showToast('🎙️ Voice Message Sent!', `${duration}s voice message shared`);
-            }
-
-            // DAILY CHALLENGES
-            showDailyChallengeIfNeeded() {
-                const today = new Date().toDateString();
-                const lastDate = localStorage.getItem('moborev_last_challenge');
-                if (lastDate !== today && this.currentScreen === 'dashboard') {
-                    setTimeout(() => this.showDailyChallenge(), 1000);
-                }
-            }
-
-            showDailyChallenge() {
-                const dayIndex = new Date().getDay();
-                const challenge = this.dailyChallenges[dayIndex];
-                
-                document.getElementById('challengeIcon').textContent = challenge.icon;
-                document.getElementById('challengeTitle').textContent = challenge.title;
-                document.getElementById('challengePrompt').textContent = challenge.prompt;
-                document.getElementById('challengeCard').style.backgroundColor = challenge.color;
-                
-                this.showModal('dailyChallengeModal');
-            }
-
-            acceptDailyChallenge() {
-                const dayIndex = new Date().getDay();
-                const challenge = this.dailyChallenges[dayIndex];
-                
-                document.getElementById('thoughtInput').value = `💫 ${challenge.title}: ${challenge.prompt}`;
-                this.updateCharCount({target: document.getElementById('thoughtInput')}, 'charCount', 500);
-                
-                localStorage.setItem('moborev_last_challenge', new Date().toDateString());
-                
-                this.hideModal('dailyChallengeModal');
-                this.showAddThoughtModal();
-                
-                this.showToast('🎯 Challenge Accepted!', 'Share your thoughtful response');
-            }
-
-            skipDailyChallenge() {
-                localStorage.setItem('moborev_last_challenge', new Date().toDateString());
-                this.hideModal('dailyChallengeModal');
-                this.showToast('Maybe Tomorrow', 'New challenge tomorrow!');
-            }
-
-            // NOTIFICATIONS
-            showNotificationModal() {
-                this.showModal('notificationModal');
-                this.renderNotifications();
-            }
-
-            hideNotificationModal() {
-                this.hideModal('notificationModal');
-            }
-
-            addNotification(title, body) {
-                const notification = {
-                    id: Date.now().toString(),
-                    title: title,
-                    body: body,
-                    time: "Just now",
-                    read: false,
-                    timestamp: new Date()
-                };
-                
-                this.notifications.unshift(notification);
-                this.notificationCount++;
-                this.updateNotificationBadge();
-                this.saveData();
-                this.showToast(title, body);
-            }
-
-            renderNotifications() {
-                const container = document.getElementById('notificationsList');
-                if (this.notifications.length === 0) {
-                    container.innerHTML = `
-                        <div class="text-center py-8">
-                            <p class="text-4xl mb-2">🔔</p>
-                            <p class="text-gray-500">No notifications yet</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                container.innerHTML = this.notifications.slice(0, 10).map(notif => `
-                    <div class="bg-${notif.read ? 'gray-50' : 'blue-50'} rounded-lg p-3 ${notif.read ? '' : 'border-l-4 border-blue-400'}">
-                        <h4 class="font-medium text-gray-800">${notif.title}</h4>
-                        <p class="text-sm text-gray-600 mt-1">${notif.body}</p>
-                        <p class="text-xs text-gray-400 mt-1">${notif.time}</p>
-                    </div>
-                `).join('');
-            }
-
-            clearNotifications() {
-                this.notifications = [];
-                this.notificationCount = 0;
-                this.updateNotificationBadge();
-                this.renderNotifications();
-                this.saveData();
-            }
-
-            updateNotificationBadge() {
-                const badge = document.getElementById('notificationBadge');
-                const count = document.getElementById('notificationCount');
-                
-                if (this.notificationCount > 0) {
-                    badge.style.display = 'flex';
-                    count.textContent = this.notificationCount > 9 ? '9+' : this.notificationCount;
-                } else {
-                    badge.style.display = 'none';
-                }
-            }
-
-            // PROFILE MANAGEMENT
-            showProfileModal() {
-                this.showModal('profileModal');
-            }
-
-            hideProfileModal() {
-                this.hideModal('profileModal');
-            }
-
-            saveProfile() {
-                const userName = document.getElementById('userNameInput').value.trim();
-                const userPetName = document.getElementById('userPetNameInput').value.trim();
-                const partnerPetName = document.getElementById('partnerPetNameInput').value.trim();
-
-                if (!userName || !userPetName || !partnerPetName) {
-                    this.showToast('Missing Info', 'Please fill in all fields');
-                    return;
-                }
-
-                this.profiles.user.name = userName;
-                this.profiles.user.petName = userPetName;
-                this.profiles.partner.petName = partnerPetName;
-
-                document.getElementById('userPetNameDisplay').textContent = userPetName + '!';
-
-                this.renderThoughts();
-                this.saveData();
-                this.hideProfileModal();
-                this.showToast('💕 Profile Updated!', 'Changes saved successfully');
-            }
-
-            // MIND MAP
-            setMindMapView(view) {
-                this.mindMapView = view;
-                document.querySelectorAll('.mind-map-view-btn').forEach(btn => {
-                    btn.classList.remove('active', 'bg-blue-600', 'text-white');
-                    btn.classList.add('border', 'border-gray-300');
-                });
-                document.getElementById(`${view}ViewBtn`).classList.add('active', 'bg-blue-600', 'text-white');
-                this.renderInteractiveMindMap();
-                this.showToast('View Changed', `Switched to ${view} layout`);
-            }
-
-            setMindMapFilter(filter) {
-                this.mindMapFilter = filter;
-                document.querySelectorAll('.mind-map-filter-btn').forEach(btn => {
-                    btn.classList.remove('active', 'bg-blue-100', 'text-blue-800');
-                    btn.classList.add('border', 'border-gray-300');
-                });
-                const btnText = filter === 'mine' ? 'Mine' : filter === 'partner' ? 'Partner' : 'All';
-                document.getElementById(`filter${btnText}Btn`).classList.add('active', 'bg-blue-100', 'text-blue-800');
-                this.renderInteractiveMindMap();
-            }
-
-            renderInteractiveMindMap() {
-                const svg = document.getElementById('mindMapSvg');
-                if (!svg) return;
-
-                svg.innerHTML = '';
-
-                let filteredThoughts = this.thoughts;
-                if (this.mindMapFilter === 'mine') {
-                    filteredThoughts = this.thoughts.filter(t => t.userId === 'user');
-                } else if (this.mindMapFilter === 'partner') {
-                    filteredThoughts = this.thoughts.filter(t => t.userId === 'partner');
-                }
-
-                if (filteredThoughts.length === 0) {
-                    const foreignObject = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
-                    foreignObject.setAttribute('width', '100%');
-                    foreignObject.setAttribute('height', '100%');
-                    foreignObject.innerHTML = `
-                        <div class="w-full h-full flex items-center justify-center">
-                            <div class="text-center">
-                                <p class="text-4xl mb-2">🔍</p>
-                                <p class="text-gray-600">No thoughts to display</p>
+                                <input type="checkbox" id="weeklyInsightsToggle" checked class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500">
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="font-medium text-blue-800">Connection Reminders</h4>
+                                    <p class="text-sm text-blue-600">Get gentle nudges when you haven't connected recently</p>
+                                </div>
+                                <input type="checkbox" id="connectionRemindersToggle" checked class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-blue-700 mb-2">Reminder Frequency</label>
+                                <select id="reminderFrequencySelect" class="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="daily">Daily</option>
+                                    <option value="every2days" selected>Every 2 days</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="never">Never</option>
+                                </select>
                             </div>
                         </div>
-                    `;
-                    svg.appendChild(foreignObject);
-                    return;
-                }
+                    </div>
+                </div>
+            </div>
 
-                const svgRect = svg.getBoundingClientRect();
-                const width = svgRect.width || 400;
-                const height = svgRect.height || 384;
+            <!-- Privacy Tab -->
+            <div id="privacyTab" class="tab-content hidden">
+                <div class="max-w-2xl mx-auto space-y-6">
+                    <!-- Notification Settings -->
+                    <div class="bg-indigo-50 rounded-2xl p-6">
+                        <h3 class="text-lg font-semibold text-indigo-800 mb-4 flex items-center">
+                            <span class="mr-2">🔔</span> Notification Settings
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="font-medium text-indigo-800">Push Notifications</h4>
+                                    <p class="text-sm text-indigo-600">Receive notifications when your partner shares thoughts</p>
+                                </div>
+                                <input type="checkbox" id="pushNotificationsToggle" checked class="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500">
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="font-medium text-indigo-800">Email Notifications</h4>
+                                    <p class="text-sm text-indigo-600">Get weekly summaries and important updates via email</p>
+                                </div>
+                                <input type="checkbox" id="emailNotificationsToggle" checked class="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500">
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="font-medium text-indigo-800">Sound Alerts</h4>
+                                    <p class="text-sm text-indigo-600">Play sounds for new notifications</p>
+                                </div>
+                                <input type="checkbox" id="soundAlertsToggle" class="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Data & Privacy -->
+                    <div class="bg-green-50 rounded-2xl p-6">
+                        <h3 class="text-lg font-semibold text-green-800 mb-4 flex items-center">
+                            <span class="mr-2">🛡️</span> Data & Privacy
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="font-medium text-green-800">Analytics</h4>
+                                    <p class="text-sm text-green-600">Help improve MoboRev with anonymous usage data</p>
+                                </div>
+                                <input type="checkbox" id="analyticsToggle" checked class="w-5 h-5 text-green-600 rounded focus:ring-green-500">
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="font-medium text-green-800">Profile Visibility</h4>
+                                    <p class="text-sm text-green-600">Allow partner to see your profile information</p>
+                                </div>
+                                <input type="checkbox" id="profileVisibilityToggle" checked class="w-5 h-5 text-green-600 rounded focus:ring-green-500">
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-medium text-green-800 mb-2">Data Retention</h4>
+                                <p class="text-sm text-green-600 mb-3">How long to keep your thoughts and conversations</p>
+                                <select id="dataRetentionSelect" class="w-full px-3 py-2 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                                    <option value="forever" selected>Keep forever</option>
+                                    <option value="2years">2 years</option>
+                                    <option value="1year">1 year</option>
+                                    <option value="6months">6 months</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Export & Delete -->
+                    <div class="bg-amber-50 rounded-2xl p-6">
+                        <h3 class="text-lg font-semibold text-amber-800 mb-4 flex items-center">
+                            <span class="mr-2">📦</span> Data Management
+                        </h3>
+                        
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <button id="exportConversationsBtn" class="bg-amber-100 text-amber-800 p-4 rounded-lg text-center hover:bg-amber-200 transition-colors">
+                                <div class="text-2xl mb-2">📄</div>
+                                <h4 class="font-medium">Export Conversations</h4>
+                                <p class="text-sm">Download as PDF or JSON</p>
+                            </button>
+                            
+                            <button id="clearAllDataBtn" class="bg-red-100 text-red-800 p-4 rounded-lg text-center hover:bg-red-200 transition-colors">
+                                <div class="text-2xl mb-2">🗑️</div>
+                                <h4 class="font-medium">Clear All Data</h4>
+                                <p class="text-sm">Delete all thoughts & conversations</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Example Preview -->
+            <div class="mt-6 p-4 bg-gray-50 rounded-xl">
+                <p class="text-sm text-gray-600 text-center mb-3"><span class="font-medium">Preview:</span> How names will appear</p>
+                <div class="flex justify-center space-x-6">
+                    <div class="text-center">
+                        <div class="w-10 h-10 bg-purple-100 rounded-full mx-auto mb-2 flex items-center justify-center">
+                            <span class="text-sm">👤</span>
+                        </div>
+                        <p class="text-xs font-medium" id="userNamePreview">Sunshine</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full mx-auto mb-2 flex items-center justify-center">
+                            <span class="text-sm">❤️</span>
+                        </div>
+                        <p class="text-xs font-medium" id="partnerNamePreview">Sweetheart</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                // Simple circular layout for demo
-                const centerX = width / 2;
-                const centerY = height / 2;
-                const radius = Math.min(width, height) * 0.3;
+    <!-- Daily Challenge Modal -->
+    <div id="dailyChallengeModal" class="modal hide fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl p-6 max-w-md w-full bubble-enter">
+            <div id="challengeCard" class="rounded-2xl p-6 mb-4" style="background-color: #FFE6CC;">
+                <div class="text-center">
+                    <div id="challengeIcon" class="text-4xl mb-3">🙏</div>
+                    <h2 id="challengeTitle" class="text-xl font-bold text-gray-800 mb-3">Daily Connection Challenge</h2>
+                    <p id="challengePrompt" class="text-gray-700 leading-6">Share one thing your partner did recently that made you feel grateful.</p>
+                </div>
+            </div>
+            
+            <div class="text-center mb-6">
+                <p class="text-sm text-gray-600">💡 Daily challenges help deepen your connection with fresh conversation starters</p>
+            </div>
+            
+            <div class="flex space-x-3">
+                <button id="skipChallengeBtn" class="flex-1 border border-gray-300 text-gray-700 py-3 rounded-2xl font-medium hover:bg-gray-50 transition-colors">
+                    Maybe Later
+                </button>
+                <button id="acceptChallengeBtn" class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 rounded-2xl font-medium hover:from-purple-700 hover:to-pink-700 transition-colors">
+                    Accept Challenge
+                </button>
+            </div>
+            
+            <div class="text-center mt-4">
+                <p class="text-xs text-gray-500">New challenge every day at 9 AM</p>
+            </div>
+        </div>
+    </div>
 
-                filteredThoughts.forEach((thought, index) => {
-                    const angle = (index / filteredThoughts.length) * 2 * Math.PI;
-                    const x = centerX + Math.cos(angle) * radius;
-                    const y = centerY + Math.sin(angle) * radius;
-
-                    const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-                    group.style.cursor = 'pointer';
-
-                    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                    circle.setAttribute('cx', x);
-                    circle.setAttribute('cy', y);
-                    circle.setAttribute('r', 20 + thought.replies.length * 3);
-                    circle.setAttribute('fill', thought.color);
-                    circle.setAttribute('stroke', '#fff');
-                    circle.setAttribute('stroke-width', '2');
-                    group.appendChild(circle);
-
-                    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                    text.setAttribute('x', x);
-                    text.setAttribute('y', y + 5);
-                    text.setAttribute('text-anchor', 'middle');
-                    text.setAttribute('font-size', '14');
-                    text.textContent = thought.isVoiceMessage ? '🎙️' : '💭';
-                    group.appendChild(text);
-
-                    group.addEventListener('click', () => {
-                        this.showNodeInfo(thought);
-                    });
-
-                    svg.appendChild(group);
-                });
-            }
-
-            showNodeInfo(thought) {
-                const panel = document.getElementById('nodeInfoPanel');
-                const title = document.getElementById('nodeTitle');
-                const content = document.getElementById('nodeContent');
-                const time = document.getElementById('nodeTime');
-
-                title.textContent = `${thought.isVoiceMessage ? '🎙️ Voice' : '💭 Thought'} by ${this.profiles[thought.userId].petName}`;
-                content.textContent = thought.content;
-                time.textContent = this.formatTimeAgo(thought.timestamp);
-
-                panel.classList.remove('hidden');
-
-                setTimeout(() => {
-                    panel.classList.add('hidden');
-                }, 5000);
-            }
-
-            // DEMO FUNCTIONS
-            startDemo() {
-                const btn = document.getElementById('startDemoBtn');
-                btn.textContent = 'Demo Running...';
-                btn.disabled = true;
-
-                const demoThoughts = [
-                    { content: "I was just thinking about our future together and it fills me with so much excitement and joy.", authorId: "partner", color: "#B3E6FF" },
-                    { content: "You make me want to be the best version of myself every single day.", authorId: "user", color: "#FFB3E6" }
-                ];
-
-                demoThoughts.forEach((thought, index) => {
-                    setTimeout(() => {
-                        const newThought = {
-                            id: Date.now() + index,
-                            userId: thought.authorId,
-                            content: thought.content,
-                            timestamp: new Date(),
-                            color: thought.color,
-                            replies: [],
-                            isVoiceMessage: false
-                        };
-
-                        this.thoughts.unshift(newThought);
-                        this.renderThoughts();
-                        this.updateStats();
-                        this.saveData();
-
-                        this.addNotification("💭 Demo Thought", `${this.profiles[thought.authorId].petName}: "${thought.content.substring(0, 30)}..."`);
-                    }, (index + 1) * 2000);
-                });
-
-                setTimeout(() => {
-                    btn.textContent = 'Start Demo';
-                    btn.disabled = false;
-                }, 6000);
-            }
-
-            resetApp() {
-                this.thoughts = [];
-                this.notifications = [];
-                this.notificationCount = 0;
-                this.renderThoughts();
-                this.updateNotificationBadge();
-                this.updateStats();
-                this.saveData();
-                this.showToast('🧹 Reset Complete', 'All data cleared');
-            }
-
-            testNotifications() {
-                const testNotifs = [
-                    { title: "💕 Connection Reminder", body: "Share something beautiful with your partner!" },
-                    { title: "🌟 Weekly Milestone", body: "You've shared 5 meaningful thoughts this week!" },
-                    { title: "💭 Thoughtful Moment", body: "Small gestures of love create the strongest bonds." }
-                ];
-
-                testNotifs.forEach((notif, index) => {
-                    setTimeout(() => {
-                        this.addNotification(notif.title, notif.body);
-                    }, index * 1500);
-                });
-            }
-
-            toggleInsight() {
-                const expanded = document.getElementById('expandedInsight');
-                const btn = document.getElementById('expandInsightBtn');
-
-                if (expanded.classList.contains('hidden')) {
-                    expanded.classList.remove('hidden');
-                    btn.textContent = 'Show Less ↑';
-                } else {
-                    expanded.classList.add('hidden');
-                    btn.textContent = 'See Full Report ↓';
-                }
-            }
-
-            // UTILITY FUNCTIONS
-            updateCharCount(e, counterId, maxLength) {
-                const count = e.target.value.length;
-                document.getElementById(counterId).textContent = count;
-
-                if (count > maxLength * 0.9) {
-                    document.getElementById(counterId).parentElement.classList.add('text-red-500');
-                } else {
-                    document.getElementById(counterId).parentElement.classList.remove('text-red-500');
-                }
-            }
-
-            updateStats() {
-                const totalThoughts = this.thoughts.length;
-                const totalReplies = this.thoughts.reduce((sum, thought) => sum + thought.replies.length, 0);
-                const statsEl = document.getElementById('statsText');
-                if (statsEl) {
-                    statsEl.textContent = `Current thoughts: ${totalThoughts} | Replies: ${totalReplies} | Interactive app running!`;
-                }
-
-                // Show/hide weekly insight based on thoughts
-                const weeklyInsightEl = document.getElementById('weeklyInsight');
-                if (totalThoughts >= 3 && weeklyInsightEl) {
-                    weeklyInsightEl.classList.remove('hidden');
-                }
-            }
-
-            formatTimeAgo(timestamp) {
-                const now = new Date();
-                const diff = now.getTime() - new Date(timestamp).getTime();
-                const minutes = Math.floor(diff / 60000);
-                const hours = Math.floor(diff / 3600000);
-                const days = Math.floor(diff / 86400000);
-
-                if (minutes < 1) return 'Just now';
-                if (minutes < 60) return `${minutes}m ago`;
-                if (hours < 24) return `${hours}h ago`;
-                if (days < 7) return `${days}d ago`;
-
-                return new Date(timestamp).toLocaleDateString();
-            }
-
-            showToast(title, message) {
-                const toast = document.createElement('div');
-                toast.className = 'fixed top-4 right-4 bg-white border border-blue-200 rounded-lg p-4 shadow-lg z-50 max-w-sm bubble-enter';
-                toast.innerHTML = `
-                    <h4 class="font-semibold text-gray-800">${title}</h4>
-                    <p class="text-sm text-gray-600 mt-1">${message}</p>
-                `;
-
-                document.body.appendChild(toast);
-
-                setTimeout(() => {
-                    toast.remove();
-                }, 4000);
-            }
-        }
-
-        // Initialize the app
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('🎉 MoboRev Full App Starting...');
-            window.moboRevApp = new MoboRevApp();
-            console.log('✅ MoboRev Full App Ready!');
-        });
-
-    </script>
-
+    <script type="text/javascript" src="./interactive-app.js"></script>
 </body>
 </html>
